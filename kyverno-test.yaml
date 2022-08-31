@@ -1,0 +1,16 @@
+name: disallow_latest_tag
+policies:
+  - disallow-latest-tag.yaml
+resources:
+  - deployment.yaml
+results:
+  - policy: disallow-latest-tag
+    rule: require-image-tag
+    resource: cns-website
+    kind: Deployment
+    result: pass
+  - policy: disallow-latest-tag
+    rule: validate-image-tag
+    resource: cns-website
+    kind: Deployment
+    result: pass
