@@ -1,0 +1,34 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: check-vulnerabilities
+spec:
+  validationFailureAction: enforce
+  webhookTimeoutSeconds: 10
+  failurePolicy: Fail
+  rules:
+    - name: not-older-than-one-week
+      match:
+        any:
+        - resources:
+            kinds:
+              - Pod
+      verifyImages:
+      - imageReferences:
+        - "CONTAINER-REGISTRY/*:*"
+        attestors: 
+        - count: 1 
+          entries: 
+          - keys: 
+              publicKeys: |- 
+                -----BEGIN PUBLIC KEY-----
+                MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEvcLByTJSlRc6dSsBdZct3UrQQUu7
+                /Q78ncxSQDu821I933Q3lVEXrd14km1CuWM7sHZdFNzVHM5sPMiY6Rj1NA==
+                -----END PUBLIC KEY-----
+        attestations:
+        - predicateType: cosign.sigstore.dev/attestation/vuln/v1
+          conditions:
+          - all:
+            - key: "{{ time_since('','{{metadata.scanFinishedOn}}','') }}"
+              operator: LessThanOrEquals
+              value: "168h"

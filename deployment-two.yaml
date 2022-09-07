@@ -11,11 +11,11 @@ spec:
   template:
     metadata:
       labels:
-        run: cns-website 
+        run: cns-website
     spec:
       containers:
       - name: cns-website
-        image: docker.io/anaisurlichs/cns-website:0.0.6
+        image: docker.io/anaisurlichs/cns-website:0.0.4
         ports:
           - containerPort: 80
         imagePullPolicy: Always

@@ -5,7 +5,7 @@ metadata:
 spec: 
   validationFailureAction: enforce 
   background: false 
-  webhookTimeoutSeconds: 30 
+  webhookTimeoutSeconds: 10 
   failurePolicy: Fail 
   rules: 
     - name: check-image 
